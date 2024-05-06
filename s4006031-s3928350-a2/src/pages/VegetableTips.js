@@ -4,7 +4,7 @@ function VegetableTips() {
   return (
     <div>
     <div className="bg-green-500 text-white py-4">
-        <h1 className="text-3xl font-semibold text-center">Tips</h1>
+        <h1 className="text-3xl font-semibold text-center">Vegetable Tips</h1>
       </div>
     <div className="vegetable-tips-container">
       <img src="/Plant.jpg" alt="SOIL Organic Food Grocer" className="image-container" />

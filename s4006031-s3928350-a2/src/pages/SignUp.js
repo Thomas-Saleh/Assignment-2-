@@ -6,6 +6,7 @@ function Signup() {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
   
   // State to track if the form is submitted
@@ -63,6 +64,21 @@ function Signup() {
       alert('Your password must be at least 8 characters long.');
       return false;
     }
+    // Check if password contains at least one uppercase letter
+    if (!/[A-Z]/.test(userDetails.password)) {
+      alert('Your password must contain at least one uppercase letter.');
+      return false;
+    }
+    // Check if password contains at least one number
+    if (!/\d/.test(userDetails.password)) {
+      alert('Your password must contain at least one number.');
+      return false;
+    }
+    // Check if password matches confirm password
+    if (userDetails.password !== userDetails.confirmPassword) {
+      alert('Password and Confirm Password must match.');
+      return false;
+    }
     return true;
   };
 
@@ -87,12 +103,10 @@ function Signup() {
         renderSuccessMessage()
       ) : (
         <form onSubmit={handleSubmit} className="signin-form">
-          <input type="text" name="name" placeholder="Name" required onChange={handleInputChange} className="signin-input"
-          />
-          <input type="email" name="email" placeholder="Email" required onChange={handleInputChange} className="signin-input"
-          />
-          <input type="password" name="password" placeholder="Password" required onChange={handleInputChange} className="signin-input"
-          />
+          <input type="text" name="name" placeholder="Name" required onChange={handleInputChange} className="signin-input"/>
+          <input type="email" name="email" placeholder="Email" required onChange={handleInputChange} className="signin-input"/>
+          <input type="password" name="password" placeholder="Password" required onChange={handleInputChange} className="signin-input"/>
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" required onChange={handleInputChange} className="signin-input" />
           <button type="submit" className="signin-button">Sign Up</button>
         </form>
       )}

@@ -175,7 +175,7 @@ function Profile() {
               <p className="text-lg mb-2"><strong>Health Goals:</strong> {userDetails.healthGoals}</p>
               <div className="btn-group flex justify-around mt-4">
                 <button onClick={handleEdit} className="btn-primary">Edit</button>
-                <button onClick={handleDelete} className="btn-secondary">Delete</button>
+                <button onClick={handleDelete} className="btn-secondary">Delete Account</button>
                 <button onClick={handleLogout} className="btn-secondary">Logout</button>
               </div>
             </div>

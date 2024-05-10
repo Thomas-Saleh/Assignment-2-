@@ -47,6 +47,8 @@ function SignIn() {
       localStorage.setItem('userDetails', JSON.stringify(user));
       setIsLoggedIn(true);
       setLoginError('');
+      window.location.href = '/'; // Redirect to homepage
+
     } else {
       setLoginError('Invalid email or password.');
     }

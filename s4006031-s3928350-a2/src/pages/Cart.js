@@ -5,12 +5,20 @@ function Cart() {
   // State variables for cart items and checkout display
   const [cart, setCart] = useState([]);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
     // Load cart items from local storage
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
+    }
+
+    // Check if the user is logged in
+    const sessionToken = localStorage.getItem('sessionToken');
+    if (sessionToken) {
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -33,6 +41,32 @@ function Cart() {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
+  
+
+  // Calculate total price
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  // Function to handle checkout button click
+  const handleCheckout = () => {
+    setShowCheckout(true);
+  };
+
+  // If user is not logged in, show sign-in prompt
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            Please sign in to view your cart
+          </h1>
+          <button onClick={() => window.location.href = '/sign-in'} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // Render message if cart is empty
   if (cart.length === 0) {
     return (
@@ -45,15 +79,6 @@ function Cart() {
         </div>
       );
   }
-
-  // Calculate total price
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  // Function to handle checkout button click
-  const handleCheckout = () => {
-    setShowCheckout(true);
-  };
-
   
 
   return (

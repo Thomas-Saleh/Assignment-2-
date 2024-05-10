@@ -6,6 +6,8 @@ function DietPlan() {
   const [calorieGoal, setCalorieGoal] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
     // Retrieve diet plan from localStorage
@@ -16,6 +18,11 @@ function DietPlan() {
       setDietaryRestrictions(dietPlanData.dietaryRestrictions);
       setPreferredMealTimes(dietPlanData.preferredMealTimes);
       setCalorieGoal(dietPlanData.calorieGoal);
+    }
+    // Check if the user is logged in
+    const sessionToken = localStorage.getItem('sessionToken');
+    if (sessionToken) {
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -60,6 +67,20 @@ function DietPlan() {
     // Disable editing mode
     setIsEditing(false);
   };
+
+  // If user is not logged in, show sign-in prompt
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Sign in to view your diet plan</h1>
+          <button onClick={() => window.location.href = '/sign-in'} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
 
 
 

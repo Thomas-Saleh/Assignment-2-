@@ -11,6 +11,9 @@ function Profile() {
   const [editedUser, setEditedUser] = useState(null);
   // State to show success message after saving changes
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  // State to hold confirm password
+  const [confirmPassword, setConfirmPassword] = useState('');
+
 
 
 
@@ -51,11 +54,20 @@ function Profile() {
       setEditedUser({ ...editedUser, [name]: value });
     }
   
-  
+  // Function to handle changes in confirm password field
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
 
   // Function to save changes
   const handleSave = () => {
-  
+    
+    // Validate password and confirm password
+    if (editedUser.password !== confirmPassword) {
+    alert("Passwords don't match. Please enter matching passwords.");
+    return;
+    }
+
     // Update userDetails with editedUser
     setUserDetails(editedUser);
   
@@ -138,6 +150,15 @@ function Profile() {
               <div className="flex flex-col space-y-2">
               <label className="block text-sm font-bold mb-2 text-gray-1000">Name:</label>
               <input type="text" name="name" value={editedUser.name} onChange={handleChange} className="input-field" />
+
+              <label className="block text-sm font-bold mb-2 text-gray-1000">Email:</label>
+              <input type="email" name="email" value={editedUser.email} onChange={handleChange} className="input-field" />
+
+              <label className="block text-sm font-bold mb-2 text-gray-1000">Password:</label>
+              <input type="password" name="password" value={editedUser.password} onChange={handleChange} className="input-field"/>
+
+              <label className="block text-sm font-bold mb-2 text-gray-1000">Confirm Password:</label>
+              <input type="password" name="confirmPassword" value={confirmPassword} onChange={handleConfirmPasswordChange} className="input-field"/>
       
                 <label className="block text-sm font-bold mb-2 text-gray-1000">Age:</label>
                 <input type="number" name="age" value={editedUser.age} onChange={handleChange} className="input-field" />

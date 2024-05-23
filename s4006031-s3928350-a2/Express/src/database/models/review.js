@@ -1,9 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  class Review extends Model {}
-
-  Review.init({
+module.exports = (sequelize, DataTypes) =>
+  sequelize.define("Review", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -11,25 +7,22 @@ module.exports = (sequelize) => {
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'users',
+        model: 'Users',
         key: 'id'
-      },
-      onDelete: 'CASCADE'
+      }
     },
     product_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'products',
+        model: 'Products',
         key: 'id'
-      },
-      onDelete: 'CASCADE'
+      }
     },
     review_text: {
       type: DataTypes.STRING(255),
-      allowNull: true
     },
     star_rating: {
       type: DataTypes.INTEGER,
@@ -38,22 +31,9 @@ module.exports = (sequelize) => {
         min: 1,
         max: 5
       }
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     }
   }, {
-    sequelize,
-    modelName: 'Review',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   });
-
-  return Review;
-};

@@ -1,9 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  class Cart extends Model {}
-
-  Cart.init({
+module.exports = (sequelize, DataTypes) =>
+  sequelize.define("Cart", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -13,39 +9,24 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users',
+        model: 'Users',
         key: 'id'
-      },
-      onDelete: 'CASCADE'
+      }
     },
     product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'products',
+        model: 'Products',
         key: 'id'
-      },
-      onDelete: 'CASCADE'
+      }
     },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     }
   }, {
-    sequelize,
-    modelName: 'Cart',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   });
-
-  return Cart;
-};

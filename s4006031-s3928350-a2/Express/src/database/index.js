@@ -1,25 +1,33 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const config = require("../config");
+const { Sequelize, DataTypes } = require('sequelize');
+require('dotenv').config();
 
-const db = {
-  Op: Sequelize.Op,
-};
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  }
+);
 
-// Create Sequelize instance.
-db.sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-  host: config.HOST,
-  dialect: config.DIALECT,
-});
+const db = {};
 
-// Include models.
-db.user = require("./user")(db.sequelize, DataTypes);
-db.isLoggedIn = require("./isLoggedIn")(db.sequelize, DataTypes);
-db.product = require("./product")(db.sequelize, DataTypes);
-db.review = require("./review")(db.sequelize, DataTypes);
-db.cart = require("./cart")(db.sequelize, DataTypes);
-db.follow = require("./follow")(db.sequelize, DataTypes);
+// Import models
+db.user = require('./models/users')(sequelize, DataTypes);
+db.isLoggedIn = require('./models/isLoggedIn')(sequelize, DataTypes);
+db.product = require('./models/products')(sequelize, DataTypes);
+db.review = require('./models/reviews')(sequelize, DataTypes);
+db.cart = require('./models/cart')(sequelize, DataTypes);
+db.follow = require('./models/follows')(sequelize, DataTypes);
 
-// Set up associations.
+// Set up associations
 db.user.hasMany(db.isLoggedIn, { foreignKey: 'user_id' });
 db.isLoggedIn.belongsTo(db.user, { foreignKey: 'user_id' });
 
@@ -38,10 +46,7 @@ db.cart.belongsTo(db.product, { foreignKey: 'product_id' });
 db.user.belongsToMany(db.user, { as: 'Followers', through: db.follow, foreignKey: 'follower_id' });
 db.user.belongsToMany(db.user, { as: 'Following', through: db.follow, foreignKey: 'following_id' });
 
-// Sync and seed data.
-db.sync = async () => {
-  // Sync schema.
-  await db.sequelize.sync();
-};
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 module.exports = db;

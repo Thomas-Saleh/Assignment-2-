@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../database/index.js");
 
 // Get the cart for a user.
 exports.getCart = async (req, res) => {

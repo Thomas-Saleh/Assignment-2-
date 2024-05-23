@@ -1,4 +1,4 @@
-const db = require("../models");
+const db = require("../database/index.js");
 
 // Follow a user.
 exports.followUser = async (req, res) => {

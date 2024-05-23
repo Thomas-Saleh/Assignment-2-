@@ -1,31 +1,33 @@
-const express = require("express");
-const cors = require("cors");
-const db = require("./src/database");
-
-// Database will be sync'ed in the background.
-db.sync();
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const db = require('./src/database'); // Ensure this path is correct
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware.
+// Middleware setup
 app.use(express.json());
 app.use(cors());
 
-// Simple Hello World route.
-app.get("/", (req, res) => {
-  res.json({ message: "Hello World!" });
+// Simple route to confirm the server is working
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
-// Add routes.
-require("./src/routes/user.routes.js")(express, app);
-require("./src/routes/isLoggedIn.routes.js")(express, app);
-require("./src/routes/product.routes.js")(express, app);
-require("./src/routes/review.routes.js")(express, app);
-require("./src/routes/cart.routes.js")(express, app);
-require("./src/routes/follow.routes.js")(express, app);
+// Import and use user routes
+require('./src/routes/user.routes')(express, app);
+require('./src/routes/isLoggedIn.routes')(express, app);
+require('./src/routes/product.routes')(express, app);
+require('./src/routes/review.routes')(express, app);
+require('./src/routes/cart.routes')(express, app);
+require('./src/routes/follow.routes')(express, app);
 
-// Start server.
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+// Database synchronization and server start
+db.sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`App running on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
 });

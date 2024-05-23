@@ -1,5 +1,4 @@
-const db = require("../models");
-
+const db = require("../database/index.js");
 // Get all reviews for a product.
 exports.getAllReviewsForProduct = async (req, res) => {
   const reviews = await db.Review.findAll({ where: { product_id: req.params.productId } });

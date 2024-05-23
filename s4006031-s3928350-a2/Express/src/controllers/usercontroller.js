@@ -1,15 +1,15 @@
-const db = require("../models");
+const db = require("../database/index.js");
 const argon2 = require("argon2");
 
 // Select all users from the database.
 exports.getAllUsers = async (req, res) => {
-  const users = await db.User.findAll();
-  res.json(users);
+  const user = await db.User.findAll();
+  res.json(user);
 };
 
 // Select one user from the database.
 exports.getUserById = async (req, res) => {
-  const user = await db.User.findByPk(req.params.id);
+  const user = await db.ser.findByPk(req.params.id);
   res.json(user);
 };
 

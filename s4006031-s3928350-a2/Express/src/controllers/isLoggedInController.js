@@ -1,5 +1,4 @@
-const db = require("../models");
-
+const db = require("../database/index.js");
 // Get login status of a user.
 exports.getLoginStatus = async (req, res) => {
   const status = await db.IsLoggedIn.findOne({ where: { user_id: req.params.userId } });

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define("follow", {
+  sequelize.define("follows", {
         follower_id: {
           type: DataTypes.INTEGER,
           allowNull: false,

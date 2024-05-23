@@ -25,6 +25,7 @@ exports.login = async (req, res) => {
 
 // Create a user in the database.
 exports.createUser = async (req, res) => {
+  try {
   const hash = await argon2.hash(req.body.password, { type: argon2.argon2id });
   const user = await db.User.create({
     username: req.body.username,
@@ -37,8 +38,13 @@ exports.createUser = async (req, res) => {
     dietary_preferences: req.body.dietary_preferences,
     health_goals: req.body.health_goals
   });
-  res.json(user);
+  res.status(201).json(user);
+} catch (error) {
+  console.error("Error creating user:", error);
+  res.status(500).json({ message: error.message });
+}
 };
+
 
 // Update a user in the database.
 exports.updateUser = async (req, res) => {

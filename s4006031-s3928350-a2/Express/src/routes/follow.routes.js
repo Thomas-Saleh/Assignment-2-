@@ -1,5 +1,5 @@
 module.exports = (express, app) => {
-    const controller = require("../controllers/followController");
+    const controller = require("../controllers/followController.js");
     const router = express.Router();
   
     // Follow a user.
